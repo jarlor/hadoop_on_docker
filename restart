@@ -8,4 +8,4 @@ docker-compose down
 docker-compose up -d
 
 #设置容器间的SSH免密登录
-bash ./shells/set_ssh.sh
+bash ./scripts/set_ssh.sh
