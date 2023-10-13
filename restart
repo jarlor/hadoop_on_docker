@@ -1,0 +1,11 @@
+#/bin/bash
+
+#清除上下文环境的authorized_keys
+rm -rf ./authorized_keys
+
+#重新编排容器
+docker-compose down
+docker-compose up -d
+
+#设置容器间的SSH免密登录
+bash ./shells/set_ssh.sh
