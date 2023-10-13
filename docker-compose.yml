@@ -1,0 +1,54 @@
+version: '3'
+services:
+  hadoop1:
+    image: jarlor/hadoop_node:1.1
+    privileged: true
+    networks:
+      hadoop-net:
+        ipv4_address: 192.168.100.101
+    extra_hosts:
+      - "hadoop1:192.168.100.101"
+      - "hadoop2:192.168.100.102"
+      - "hadoop3:192.168.100.103"
+    container_name: hadoop1
+    hostname: hadoop1
+    command: /sbin/init
+
+  hadoop2:
+    image: jarlor/hadoop_node:1.1
+    privileged: true
+    networks:
+      hadoop-net:
+        ipv4_address: 192.168.100.102
+    extra_hosts:
+      - "hadoop1:192.168.100.101"
+      - "hadoop2:192.168.100.102"
+      - "hadoop3:192.168.100.103"
+    container_name: hadoop2
+    hostname: hadoop2
+    command: /sbin/init
+
+  hadoop3:
+    image: jarlor/hadoop_node:1.1
+    privileged: true
+    networks:
+      hadoop-net:
+        ipv4_address: 192.168.100.103
+    extra_hosts:
+      - "hadoop1:192.168.100.101"
+      - "hadoop2:192.168.100.102"
+      - "hadoop3:192.168.100.103"
+    container_name: hadoop3
+    hostname: hadoop3
+    command: /sbin/init
+
+networks:
+  hadoop-net:
+    driver: macvlan
+    driver_opts:
+      parent: ens33 # 将 $netCard 替换为实际的网卡名称
+    ipam:
+      driver: default
+      config:
+        - subnet: 192.168.100.0/24 # 将 $netSegment 替换为实际的子网
+          gateway: 192.168.100.2 # 将 $gateway 替换为实际的网关
