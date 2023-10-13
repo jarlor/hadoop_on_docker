@@ -9,3 +9,6 @@ docker-compose up -d
 
 #设置容器间的SSH免密登录
 bash ./scripts/set_ssh.sh
+
+#给各个容器安装Java
+bash ./scripts/set_java.sh
