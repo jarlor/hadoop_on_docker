@@ -11,4 +11,4 @@ docker-compose up -d
 bash ./scripts/set_ssh.sh
 
 #给各个容器安装Java
-bash ./scripts/set_java.sh
+# bash ./scripts/set_java.sh
