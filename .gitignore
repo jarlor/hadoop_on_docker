@@ -1,2 +1,4 @@
 authorized_keys
 /software
+/data
+/conf
