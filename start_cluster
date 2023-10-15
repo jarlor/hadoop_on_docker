@@ -1,0 +1,10 @@
+#/bin/bash
+
+#集群配置加载
+source ./cluster_config
+
+#配置macvlan保证容器与宿主机互通
+bash ./scripts/set_macvlan.sh
+
+#停止集群
+docker-compose start
