@@ -81,6 +81,8 @@ if [ "$1" == "start" ]; then
     start_cluster
 elif [ "$1" == "stop" ]; then
     stop_cluster
+elif [ "$1" == "build" ]; then
+    build_cluster
 elif [ "$1" == "restart" ]; then
     restart_cluster
 elif [ "$1" == "delete" ]; then
@@ -88,6 +90,6 @@ elif [ "$1" == "delete" ]; then
 elif [ "$1" == "reset" ]; then
     reset_cluster
 else
-    echo "Usage: $0 [start|stop|restart|delete|reset]"
+    echo "Usage: $0 [start|stop|build|restart|delete|reset]"
     exit 1
 fi
