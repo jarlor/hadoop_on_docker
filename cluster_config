@@ -1,0 +1,20 @@
+#集群参数配置
+
+
+#本机ip
+export host_ip='192.168.100.100'
+#网卡名
+export netcard_name='ens33'
+#网关
+export host_gateway='192.168.100.2' 
+#网段
+export host_subnet='192.168.100.0/24'
+#自定义节点ip
+export ip_hadoop1='192.168.100.101'
+export ip_hadoop2='192.168.100.102'
+export ip_hadoop3='192.168.100.103'
+
+#jdk文件路径
+export jdk_file_path='./software/jdk-8u212-linux-x64.tar.gz'
+export jdk_file_name='jdk-8u212-linux-x64.tar.gz'
+
