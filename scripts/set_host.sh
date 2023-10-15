@@ -1,11 +1,17 @@
 #!/bin/bash
 
-#配置主机hosts
-echo "Add hosts to /etc/hosts"
+# 检查是否存在主机名映射并添加
+add_host_if_not_exists() {
+    if ! grep -q "$1" /etc/hosts; then
+        echo "$1" >> /etc/hosts
+    fi
+}
 
-echo "${ip_hadoop1} hadoop1" >> /etc/hosts
-echo "${ip_hadoop2} hadoop2" >> /etc/hosts
-echo "${ip_hadoop3} hadoop3" >> /etc/hosts
+# 添加主机名映射（如果不存在）
+add_host_if_not_exists "${ip_hadoop1} hadoop1"
+add_host_if_not_exists "${ip_hadoop2} hadoop2"
+add_host_if_not_exists "${ip_hadoop3} hadoop3"
+add_host_if_not_exists "127.0.0.1 mysql-test"
+add_host_if_not_exists "127.0.0.1 httpd"
 
-echo "127.0.0.1 mysql-test" >> /etc/hosts
-echo "127.0.0.1 httpd" >> /etc/hosts
+echo "Hosts configuration has been updated."
