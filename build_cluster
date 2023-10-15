@@ -1,0 +1,27 @@
+#/bin/bash
+
+#清除上下文环境的authorized_keys
+rm -rf ./authorized_keys
+#集群配置加载
+source ./cluster_config
+
+#安装apache2
+bash ./scripts/setup_apache2.sh
+
+#配置macvlan保证容器与宿主机互通
+bash ./scripts/set_macvlan.sh
+
+#编排容器
+docker-compose up -d
+
+#设置容器间的SSH免密登录
+bash ./scripts/set_ssh.sh
+
+#设置集群环境变量
+bash ./scripts/set_containers_env.sh
+
+#设置jdk
+bash ./scripts/set_java.sh
+
+#启动ambari-server部署
+docker exec -it ambari-server sh -c /opt/apache/bootstrap.sh
