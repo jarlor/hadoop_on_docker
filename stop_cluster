@@ -1,7 +1,0 @@
-#/bin/bash
-
-#集群配置加载
-source ./cluster_config
-
-#停止集群
-docker-compose stop

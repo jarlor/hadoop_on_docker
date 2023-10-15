@@ -1,0 +1,93 @@
+#!/bin/bash
+
+#加载配置环境
+load_conf_env(){
+    source ./cluster_config
+}
+
+
+#部署集群
+build_cluster(){
+    load_conf_env
+    #清除上下文环境的authorized_keys
+    rm -rf ./authorized_keys
+    #安装apache2
+    bash ./scripts/set_apache2.sh
+
+    #配置macvlan保证容器与宿主机互通
+    bash ./scripts/set_macvlan.sh
+
+    #编排容器
+    docker-compose up -d
+
+    #设置容器间的SSH免密登录
+    bash ./scripts/set_ssh.sh
+
+    #设置集群环境变量
+    bash ./scripts/set_containers_env.sh
+
+    #设置jdk
+    bash ./scripts/set_java.sh
+
+    #启动ambari-server部署脚本
+    docker exec -it ambari-server sh -c /opt/apache/bootstrap.sh
+}
+
+#启动集群
+start_cluster(){
+    load_conf_env
+    docker-compose start
+    docker exec -it ambari-server /bin/bash -c "ambari-server start"
+}
+
+#停止集群
+stop_cluster(){
+    load_conf_env
+    docker exec -it ambari-server /bin/bash -c "ambari-server stop"
+    docker-compose stop
+}
+
+#重启集群
+restart_cluster(){
+    load_conf_env
+    docker-compose restart
+    docker exec -it ambari-server /bin/bash -c "ambari-server restart"
+}
+
+
+#删除集群
+delete_cluster(){
+    load_conf_env
+    #清除上下文环境的authorized_keys
+    rm -rf ./authorized_keys
+    #清除mysql配置及数据
+    rm -rf ./data/
+    rm -rf ./conf/
+    #编排容器
+    docker-compose down
+}
+
+
+#重置集群
+reset_cluster(){
+    load_conf_env
+    delete_cluster
+    build_cluster
+}
+
+
+# 主逻辑，根据传入的参数来调用不同的函数
+if [ "$1" == "start" ]; then
+    start_cluster
+elif [ "$1" == "stop" ]; then
+    stop_cluster
+elif [ "$1" == "restart" ]; then
+    restart_cluster
+elif [ "$1" == "delete" ]; then
+    delete_cluster
+elif [ "$1" == "reset" ]; then
+    reset_cluster
+else
+    echo "Usage: $0 [start|stop|restart|delete|reset]"
+    exit 1
+fi

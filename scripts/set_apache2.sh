@@ -5,7 +5,11 @@ sudo apt update
 sudo apt install apache2 -y
 
 # 配置 Apache2 监听端口
-echo "Listen 18080" | sudo tee -a /etc/apache2/ports.conf
+if ! grep -q "Listen 18080" /etc/apache2/ports.conf; then
+    echo "Listen 18080" | sudo tee -a /etc/apache2/ports.conf
+else
+    echo "Listen 18080 is already in /etc/apache2/ports.conf"
+fi
 
 # 重启 Apache2 以应用更改
 sudo systemctl restart apache2

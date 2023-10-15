@@ -1,5 +1,0 @@
-#/bin/bash
-
-./remove_cluster
-
-./build_cluster
