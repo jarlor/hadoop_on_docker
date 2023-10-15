@@ -64,7 +64,7 @@ services:
       timeout: 10s
       retries: 3
   ambari-server:
-    image: jarlor/ambari-server:1.0
+    image: jarlor/ambari-server:1.1
     container_name: ambari-server
     hostname: ambari-server
     restart: always
