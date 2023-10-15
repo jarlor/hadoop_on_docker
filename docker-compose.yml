@@ -1,7 +1,8 @@
 version: '3'
+
 services:
   hadoop1:
-    image: jarlor/centos7_sshd:1.0
+    image: jarlor/centos7_sshd:1.1
     privileged: true
     networks:
       hadoop-net:
@@ -14,7 +15,7 @@ services:
     hostname: hadoop1
     command: /sbin/init
   hadoop2:
-    image: jarlor/centos7_sshd:1.0
+    image: jarlor/centos7_sshd:1.1
     privileged: true
     networks:
       hadoop-net:
@@ -26,9 +27,8 @@ services:
     container_name: hadoop2
     hostname: hadoop2
     command: /sbin/init
-
   hadoop3:
-    image: jarlor/centos7_sshd:1.0
+    image: jarlor/centos7_sshd:1.1
     privileged: true
     networks:
       hadoop-net:
@@ -40,7 +40,6 @@ services:
     container_name: hadoop3
     hostname: hadoop3
     command: /sbin/init
-
   mysql-test:
     image: registry.cn-hangzhou.aliyuncs.com/bigdata_cloudnative/mysql-test:5.7
     restart: always
@@ -65,7 +64,7 @@ services:
       timeout: 10s
       retries: 3
   ambari-server:
-    image: registry.cn-hangzhou.aliyuncs.com/bigdata_cloudnative/ambari:2.7.5.0
+    image: jarlor/ambari-server:1.0
     container_name: ambari-server
     hostname: ambari-server
     restart: always
@@ -75,7 +74,7 @@ services:
       - /etc/hosts:/etc/hosts
     depends_on:
       - mysql-test
-    command: ["sh","-c","/opt/apache/bootstrap.sh"]
+    entrypoint: ["/usr/sbin/init"]
     healthcheck:
       test: ["CMD-SHELL", "netstat -tnlp|grep :8080 || exit 1"]
       interval: 10s
