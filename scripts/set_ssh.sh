@@ -3,9 +3,17 @@
 CONTAINER1="hadoop1"
 CONTAINER2="hadoop2"
 CONTAINER3="hadoop3"
+CONTAINER4="ambari-server"
+
+
+#针对ambari-server容器的特殊操作
+specify_ambari_server() {
+  docker exec -it ambari-server  /bin/bash -c 'echo "Port 222" >> /etc/ssh/sshd_config'
+}
 
 # 生成SSH密钥对并将公钥复制到上下文环境
 generate_ssh_key() {
+  docker exec -it $1 rm -rf /root/.ssh/id_rsa*
   docker exec -it $1 ssh-keygen -t rsa -f /root/.ssh/id_rsa -N ""
 }
 
@@ -22,8 +30,11 @@ copy_ssh_keys_to_container() {
 
 #禁止ssh严格主机检查
 foribidden_StrictHostKeyChecking() {
-  # docker exec -it $1 sed -i "s/#   StrictHostKeyChecking ask/StrictHostKeyChecking no/g" /etc/ssh/ssh_config
   docker exec -it $1 /bin/bash -c 'echo StrictHostKeyChecking no >> /etc/ssh/ssh_config'
+  #如果$1的值是ambari-server
+  if [ $1 = "ambari-server" ]; then
+    specify_ambari_server
+  fi
   #重启ssh服务
   docker exec -it $1 systemctl restart sshd
 }
@@ -42,12 +53,13 @@ set_ssh_keys_to_container() {
 }
 
 # 声明容器列表
-containers=("$CONTAINER1" "$CONTAINER2" "$CONTAINER3")
+containers=("$CONTAINER1" "$CONTAINER2" "$CONTAINER3" "$CONTAINER4")
 
 # 循环遍历容器列表并为每个容器设置SSH免密登录
 for container in "${containers[@]}"; do
     setup_ssh_key_for_container "$container"
 done
+
 
 # 将SSH公钥集合回写到各个容器,并禁止ssh严格主机检查后重启ssh服务
 for container in "${containers[@]}"; do
