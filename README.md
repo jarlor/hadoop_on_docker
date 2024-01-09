@@ -25,7 +25,7 @@
 
 下载相关离线软件(资源比较多)
 
-1. 这里提供百度网盘链接:https://pan.baidu.com/s/1gTkuPH_IdcZBvwzAK4Ew-A?pwd=here
+1. 这里提供百度网盘链接:https://pan.baidu.com/s/1xtXh3kLzaUQglH7OkR9Glw?pwd=o4a6
 2. 请将文件下载到上一步克隆下来的仓库目录下的software/文件夹下。举例如下图:
 
 ![](https://jarlor.github.io/images/image-20231015214723532.png)
